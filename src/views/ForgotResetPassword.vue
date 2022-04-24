@@ -5,9 +5,9 @@
         src="../../public/img/colored_logo_white.svg"
         alt="Logo de FindingJobs avec texte blanc"
       />
-      <h1>Mot de passe oublié</h1>
-      <form class="forgot-form">
-        <label for="email"
+      <h1>Modification de mot de passe</h1>
+      <form class="login-form">
+        <label for="identifiant"
           >Email<span> *</span>
           <input
             type="text"
@@ -17,7 +17,27 @@
             v-model="email"
           />
         </label>
-        <input type="submit" class="forgot-btn" value="Envoyer" />
+        <label for="reponse"
+          >Réponse<span> *</span>
+          <input
+            type="text"
+            id="reponse"
+            name="reponse"
+            placeholder="Réponse"
+            v-model="awswer"
+          />
+        </label>
+        <label for="password"
+          >Mot de passe<span> *</span>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Mot de passe"
+            v-model="password"
+          />
+        </label>
+        <input type="submit" class="login-btn" value="Modifier" />
       </form>
       <p>
         Vous avez retrouvé votre mot de passe ?<br />
@@ -33,6 +53,8 @@ export default {
   data() {
     return {
       email: '',
+      awswer: '',
+      password: '',
     };
   },
 };
@@ -77,7 +99,7 @@ p {
   color: #a89df7;
 }
 
-.forgot-form {
+.login-form {
   display: inline-flex;
   justify-content: center;
   flex-flow: column wrap;
@@ -85,14 +107,14 @@ p {
   padding: 0 2vh;
 }
 
-.forgot-form label {
+.login-form label {
   width: 100%;
   margin: 0 auto;
   max-width: 350px;
   font-size: 20px;
 }
 
-.forgot-form label input {
+.login-form label input {
   max-width: 345px;
   width: 100%;
   height: 45px;
@@ -102,18 +124,18 @@ p {
   margin: 10px 0;
 }
 
-.forgot-form ::placeholder {
+.login-form ::placeholder {
   text-align: center;
   font-size: large;
   font-family: Imprima, sans-serif;
 }
 
-.forgot-form label,
+.login-form label,
 p {
   color: white;
 }
 
-.forgot-btn {
+.login-btn {
   background-color: #3c365d;
   max-width: 115px;
   width: 100%;

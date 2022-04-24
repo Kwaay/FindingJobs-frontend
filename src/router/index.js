@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/LoginForm.vue';
 import Signup from '../views/SignupForm.vue';
 import Forgot from '../views/ForgotForm.vue';
+import ResetPassword from '../views/ForgotResetPassword.vue';
 import Accueil from '../views/AccueilView.vue';
 
 const routes = [
@@ -19,6 +20,11 @@ const routes = [
     path: '/forgot',
     name: 'Forgot',
     component: Forgot,
+  },
+  {
+    path: '/reset-password',
+    name: 'ResetPassword',
+    component: ResetPassword,
   },
   {
     path: '/',

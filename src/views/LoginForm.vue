@@ -14,6 +14,7 @@
             id="identifiant"
             name="identifiant"
             placeholder="Username ou Email"
+            v-model="identifiant"
           />
         </label>
         <label for="password"
@@ -23,12 +24,13 @@
             id="password"
             name="password"
             placeholder="Mot de passe"
+            v-model="password"
           />
         </label>
         <input type="submit" class="login-btn" value="Se connecter" />
       </form>
       <p>
-        Vous n'avez pas encore de compte ?
+        Vous n'avez pas encore de compte ?<br />
         <router-link :to="{ name: 'Signup' }">S'inscrire</router-link>
       </p>
       <router-link :to="{ name: 'Forgot' }">Mot de passe oublié ?</router-link>
@@ -38,7 +40,14 @@
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      identifiant: '',
+      password: '',
+    };
+  },
+};
 </script>
 
 <style scoped lang="scss">
@@ -65,12 +74,15 @@ p {
 }
 
 .container img {
-  max-width: 400px;
+  max-width: 500px;
   width: 100%;
+  padding: 2vh;
 }
 
 .container h1 {
   color: white;
+  font-weight: lighter;
+  font-size: 42px;
 }
 
 .container span {
@@ -81,21 +93,25 @@ p {
   display: inline-flex;
   justify-content: center;
   flex-flow: column wrap;
+  width: 100%;
+  padding: 0 2vh;
 }
 
 .login-form label {
   width: 100%;
   margin: 0 auto;
   max-width: 350px;
+  font-size: 20px;
 }
 
 .login-form label input {
+  max-width: 345px;
   width: 100%;
   height: 45px;
   border-radius: 5px;
   outline: transparent;
   border: 1px solid black;
-  margin: 1vh 0;
+  margin: 10px 0;
 }
 
 .login-form ::placeholder {
@@ -120,5 +136,11 @@ p {
   border-radius: 5px;
   font-size: medium;
   font-family: Imprima, sans-serif;
+}
+
+@media screen and (max-width: 1000px) {
+  .container h1 {
+    font-size: xx-large;
+  }
 }
 </style>
