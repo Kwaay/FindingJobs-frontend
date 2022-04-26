@@ -6,7 +6,7 @@
         alt="Logo de FindingJobs avec texte blanc"
       />
       <h1>Connexion</h1>
-      <form class="login-form">
+      <form class="login-form" @submit.prevent="submit">
         <label for="identifiant"
           >Identifiant<span> *</span>
           <input
@@ -46,6 +46,70 @@ export default {
       identifiant: '',
       password: '',
     };
+  },
+  methods: {
+    submit() {
+      console.log('Tapis');
+      if (this.identifiant.length < 1) {
+        this.$toast.error(`Identifiant input is empty`);
+      }
+      if (this.password.length < 1) {
+        this.$toast.error(`Password input is empty`);
+      }
+      // eslint-disable-next-line operator-linebreak
+      const regexEmail =
+        /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi;
+      const regexUsername =
+        /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$/;
+      const regexPassword =
+        /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/;
+      if (!regexPassword.test(this.password) && this.password.length > 1) {
+        return this.$toast.error(`Password format is incorrect`);
+      }
+      if (this.identifiant.match(regexEmail)) {
+        if (!regexEmail.test(this.identifiant) && this.identifiant.length > 1) {
+          return this.$toast.error(`Email format is incorrect`);
+        }
+        return fetch('http://localhost:3000/api/user/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: this.identifiant,
+            password: this.password,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.user = data;
+            setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+            return this.$toast.success(`Successfully Logged with an Email`);
+          });
+      }
+      if (
+        !regexUsername.test(this.identifiant) &&
+        this.identifiant.length > 1
+      ) {
+        return this.$toast.error(`Username format is incorrect`);
+      }
+      return fetch('http://localhost:3000/api/user/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: this.identifiant,
+          password: this.password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.user = data;
+          setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+          return this.$toast.success(`Successfully Logged with an Username`);
+        });
+    },
   },
 };
 </script>
