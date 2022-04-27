@@ -1,31 +1,62 @@
 <template>
-  <form class="login-form" @submit.prevent="submit">
-    <label for="identifiant"
-      >Identifiant<span> *</span>
+  <form class="form" @submit.prevent="submit">
+    <label v-for="input in inputs" :key="input.name" :for="input.name">
+      {{ input.placeholder }}
+      <span v-if="input.required" :class="input.iconClass"> *</span>
       <input
-        type="text"
-        id="identifiant"
-        name="identifiant"
-        placeholder="Username ou Email"
+        :type="input.type"
+        :id="input.name"
+        :name="input.name"
+        :placeholder="input.placeholder"
         v-model="identifiant"
       />
     </label>
-    <label for="password"
-      >Mot de passe<span> *</span>
-      <input
-        type="password"
-        id="password"
-        name="password"
-        placeholder="Mot de passe"
-        v-model="password"
-      />
-    </label>
-    <input type="submit" class="login-btn" value="Se connecter" />
+    <input type="submit" class="btn" :value="submitText" />
   </form>
 </template>
 
 <script>
 export default {
+  props: {
+    inputs: {
+      type: Array,
+      required: true,
+      validator(value) {
+        if (!Array.isArray(value)) return false;
+        const validationErrors = value.some((input) => {
+          if (typeof input !== 'object') return false;
+          const {
+            name,
+            type,
+            label,
+            regex,
+            errorMessage,
+            iconClass,
+            placeholder,
+            required,
+          } = input;
+          if (typeof name !== 'string' || name.length === 0) return true;
+          if (typeof type !== 'string' || type.length === 0) return true;
+          if (typeof label !== 'string' || label.length === 0) return true;
+          if (typeof iconClass !== 'string' || iconClass.length === 0)
+            return true;
+          if (typeof placeholder !== 'string' || placeholder.length === 0)
+            return true;
+          if (typeof required !== 'boolean') return true;
+          if (typeof regex === typeof new RegExp(regex)) return false;
+          if (typeof errorMessage !== 'string' || label.length === 0)
+            return false;
+
+          return false;
+        });
+        return !validationErrors;
+      },
+    },
+    submitText: {
+      type: String,
+      required: true,
+    },
+  },
   data() {
     return {
       identifiant: '',
@@ -99,8 +130,12 @@ export default {
 };
 </script>
 
-<style>
-.login-form {
+<style scoped>
+.required-icon {
+  color: #a89df7;
+}
+
+.form {
   display: inline-flex;
   justify-content: center;
   flex-flow: column wrap;
@@ -108,14 +143,15 @@ export default {
   padding: 0 2vh;
 }
 
-.login-form label {
+.form label {
   width: 100%;
   margin: 0 auto;
   max-width: 350px;
   font-size: 20px;
+  color: white;
 }
 
-.login-form label input {
+.form label input {
   max-width: 345px;
   width: 100%;
   height: 45px;
@@ -123,20 +159,16 @@ export default {
   outline: transparent;
   border: 1px solid black;
   margin: 10px 0;
+  padding-left: 2vh;
 }
 
-.login-form ::placeholder {
-  text-align: center;
+.form ::placeholder {
+  padding-left: 0.5vh;
   font-size: large;
   font-family: Imprima, sans-serif;
 }
 
-.login-form label,
-p {
-  color: white;
-}
-
-.login-btn {
+.btn {
   background-color: #3c365d;
   max-width: 115px;
   width: 100%;

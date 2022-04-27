@@ -6,7 +6,33 @@
         alt="Logo de FindingJobs avec texte blanc"
       />
       <h1>Connexion</h1>
-      <Login></Login>
+      <Form
+        :inputs="[
+          {
+            name: 'identifiant',
+            type: 'text',
+            label: 'Identifiant',
+            regex:
+              /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,})|^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$)/gm,
+            errorMessage: 'Merci de préciser un pseudonyme ou un email correct',
+            iconClass: 'required-icon',
+            placeholder: 'Pseudonyme ou Email',
+            required: true,
+          },
+          {
+            name: 'password',
+            type: 'password',
+            label: 'Mot de passe',
+            regex:
+              /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+            errorMessage: 'Merci de préciser un mot de passe correct',
+            iconClass: 'required-icon',
+            placeholder: 'Mot de passe',
+            required: true,
+          },
+        ]"
+        submitText="Se connecter"
+      ></Form>
       <p>
         Vous n'avez pas encore de compte ?<br />
         <router-link :to="{ name: 'Signup' }">S'inscrire</router-link>
@@ -18,11 +44,17 @@
 </template>
 
 <script>
-import Login from '../components/LoginForm.vue';
+import Form from '../components/CustomForm.vue';
 
 export default {
   components: {
-    Login,
+    Form,
+  },
+  data() {
+    return {
+      identifiant: '',
+      password: '',
+    };
   },
 };
 </script>
@@ -36,9 +68,11 @@ main {
 
 a {
   color: #a89df7;
+  text-align: center;
 }
 
 p {
+  color: white;
   text-align: center;
 }
 
