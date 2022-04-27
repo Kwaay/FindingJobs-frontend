@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import Login from '../views/LoginPage.vue';
-import Signup from '../views/SignupForm.vue';
+import Signup from '../views/SignupPage.vue';
 import Forgot from '../views/ForgotForm.vue';
 import ResetPassword from '../views/ForgotResetPassword.vue';
 import Accueil from '../views/AccueilView.vue';

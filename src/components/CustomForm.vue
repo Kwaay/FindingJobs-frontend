@@ -3,14 +3,19 @@
     <label v-for="input in inputs" :key="input.name" :for="input.name">
       {{ input.placeholder }}
       <span v-if="input.required" :class="input.iconClass"> *</span>
+      <div class="file-uploader" v-if="input.type === 'file'">
+        <i class="fas fa-upload"></i>
+        Uploader un avatar
+      </div>
       <input
         :type="input.type"
         :id="input.name"
         :name="input.name"
         :placeholder="input.placeholder"
-        v-model="identifiant"
+        :class="input.iconClass"
       />
     </label>
+
     <input type="submit" class="btn" :value="submitText" />
   </form>
 </template>
@@ -127,20 +132,25 @@ export default {
         });
     },
   },
+  computed: {},
 };
 </script>
 
 <style scoped>
+.hidden {
+  display: none;
+}
+
 .required-icon {
   color: #a89df7;
 }
 
 .form {
-  display: inline-flex;
-  justify-content: center;
-  flex-flow: column wrap;
-  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(375px, 1fr));
   padding: 0 2vh;
+  width: 100%;
+  max-width: 800px;
 }
 
 .form label {
@@ -149,6 +159,23 @@ export default {
   max-width: 350px;
   font-size: 20px;
   color: white;
+}
+
+.file-uploader {
+  height: 45px;
+  border-radius: 5px;
+  outline: transparent;
+  border: 1px solid black;
+  margin: 10px 0;
+  background-color: white;
+  color: black !important;
+  display: flex;
+  align-items: center;
+  padding-left: 2vh;
+}
+
+.file-uploader i {
+  padding-right: 1vh;
 }
 
 .form label input {
@@ -179,5 +206,15 @@ export default {
   border-radius: 5px;
   font-size: medium;
   font-family: Imprima, sans-serif;
+  grid-column: 1/3;
+}
+@media screen and (max-width: 950px) {
+  .form {
+    grid-template-columns: 1fr;
+  }
+
+  .btn {
+    grid-column: 1/1;
+  }
 }
 </style>
