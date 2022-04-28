@@ -18,6 +18,7 @@
             iconClass: 'required-icon',
             placeholder: 'Pseudonyme ou Email',
             required: true,
+            value: '',
           },
           {
             name: 'password',
@@ -29,9 +30,12 @@
             iconClass: 'required-icon',
             placeholder: 'Mot de passe',
             required: true,
+            value: '',
           },
         ]"
+        display="flex"
         submitText="Se connecter"
+        @submitForm="submit"
       ></Form>
       <p>
         Vous n'avez pas encore de compte ?<br />
@@ -55,6 +59,44 @@ export default {
       identifiant: '',
       password: '',
     };
+  },
+  methods: {
+    submit(dataForm) {
+      console.log('tapîs', dataForm);
+      // eslint-disable-next-line operator-linebreak
+      const regexEmail =
+        /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi;
+      if (dataForm.identifiant.match(regexEmail)) {
+        return fetch('http://localhost:3000/api/user/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            email: dataForm.identifiant,
+            password: dataForm.password,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.user = data;
+            // setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+            return this.$toast.success(`Successfully Logged with an Email`);
+          });
+      }
+      return fetch('http://localhost:3000/api/user/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          username: dataForm.identifiant,
+          password: dataForm.password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.user = data;
+          // setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+          return this.$toast.success(`Successfully Logged with an Username`);
+        });
+    },
   },
 };
 </script>

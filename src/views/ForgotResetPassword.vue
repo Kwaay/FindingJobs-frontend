@@ -6,39 +6,46 @@
         alt="Logo de FindingJobs avec texte blanc"
       />
       <h1>Modification de mot de passe</h1>
-      <form class="login-form">
-        <label for="identifiant"
-          >Email<span> *</span>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            placeholder="Email"
-            v-model="email"
-          />
-        </label>
-        <label for="reponse"
-          >Réponse<span> *</span>
-          <input
-            type="text"
-            id="reponse"
-            name="reponse"
-            placeholder="Réponse"
-            v-model="awswer"
-          />
-        </label>
-        <label for="password"
-          >Mot de passe<span> *</span>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            placeholder="Mot de passe"
-            v-model="password"
-          />
-        </label>
-        <input type="submit" class="login-btn" value="Modifier" />
-      </form>
+      <Form
+        :inputs="[
+          {
+            name: 'email',
+            type: 'text',
+            label: 'Email',
+            regex:
+              /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
+            errorMessage: 'Merci de préciser un email correct',
+            iconClass: 'required-icon',
+            placeholder: 'Email lié à votre compte',
+            required: true,
+          },
+          {
+            name: 'awswer',
+            type: 'text',
+            label: 'Réponse',
+            regex:
+              /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ,.'/_-]{4,15}$/,
+            errorMessage: 'Merci de préciser une réponse correcte',
+            iconClass: 'required-icon',
+            placeholder: 'Réponse à la question de sécurité',
+            required: true,
+          },
+          {
+            name: 'password',
+            type: 'text',
+            label: 'Nouveau mot de passe',
+            regex:
+              /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+            errorMessage: 'Merci de préciser un mot de passe correct',
+            iconClass: 'required-icon',
+            placeholder: 'Mot de passe',
+            required: true,
+          },
+        ]"
+        display="flex"
+        submitText="Envoyer"
+      ></Form>
+
       <p>
         Vous avez retrouvé votre mot de passe ?<br />
         <router-link :to="{ name: 'Login' }">Se connecter</router-link>
@@ -49,7 +56,12 @@
 </template>
 
 <script>
+import Form from '../components/CustomForm.vue';
+
 export default {
+  components: {
+    Form,
+  },
   data() {
     return {
       email: '',
@@ -73,6 +85,7 @@ a {
 
 p {
   text-align: center;
+  color: white;
 }
 
 .container {

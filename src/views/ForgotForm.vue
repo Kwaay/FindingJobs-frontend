@@ -6,19 +6,24 @@
         alt="Logo de FindingJobs avec texte blanc"
       />
       <h1>Mot de passe oublié</h1>
-      <form class="forgot-form">
-        <label for="email"
-          >Email<span> *</span>
-          <input
-            type="text"
-            id="email"
-            name="email"
-            placeholder="Email"
-            v-model="email"
-          />
-        </label>
-        <input type="submit" class="forgot-btn" value="Envoyer" />
-      </form>
+      <Form
+        :inputs="[
+          {
+            name: 'email',
+            type: 'text',
+            label: 'Email',
+            regex:
+              /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
+            errorMessage: 'Merci de préciser un email correct',
+            iconClass: 'required-icon',
+            placeholder: 'Email lié à votre compte',
+            required: true,
+          },
+        ]"
+        display="flex"
+        submitText="Envoyer"
+      ></Form>
+
       <p>
         Vous avez retrouvé votre mot de passe ?<br />
         <router-link :to="{ name: 'Login' }">Se connecter</router-link>
@@ -29,7 +34,12 @@
 </template>
 
 <script>
+import Form from '../components/CustomForm.vue';
+
 export default {
+  components: {
+    Form,
+  },
   data() {
     return {
       email: '',
@@ -51,6 +61,7 @@ a {
 
 p {
   text-align: center;
+  color: white;
 }
 
 .container {
@@ -75,55 +86,6 @@ p {
 
 .container span {
   color: #a89df7;
-}
-
-.forgot-form {
-  display: inline-flex;
-  justify-content: center;
-  flex-flow: column wrap;
-  width: 100%;
-  padding: 0 2vh;
-}
-
-.forgot-form label {
-  width: 100%;
-  margin: 0 auto;
-  max-width: 350px;
-  font-size: 20px;
-}
-
-.forgot-form label input {
-  max-width: 345px;
-  width: 100%;
-  height: 45px;
-  border-radius: 5px;
-  outline: transparent;
-  border: 1px solid black;
-  margin: 10px 0;
-}
-
-.forgot-form ::placeholder {
-  text-align: center;
-  font-size: large;
-  font-family: Imprima, sans-serif;
-}
-
-.forgot-form label,
-p {
-  color: white;
-}
-
-.forgot-btn {
-  background-color: #3c365d;
-  max-width: 115px;
-  width: 100%;
-  height: 45px;
-  color: white;
-  border: 1px solid transparent;
-  margin: 0 auto;
-  border-radius: 5px;
-  font-size: medium;
-  font-family: Imprima, sans-serif;
 }
 
 @media screen and (max-width: 1000px) {

@@ -75,6 +75,7 @@
             required: true,
           },
         ]"
+        display="grid"
         submitText="Se connecter"
       ></Form>
       <p>
