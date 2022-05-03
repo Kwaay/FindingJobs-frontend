@@ -12,8 +12,10 @@
             name: 'identifiant',
             type: 'text',
             label: 'Identifiant',
-            regex:
-              /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,})|^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$)/gm,
+            validation: {
+              regex:
+                /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,})|^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$)/gm,
+            },
             errorMessage: 'Merci de préciser un pseudonyme ou un email correct',
             iconClass: 'required-icon',
             placeholder: 'Pseudonyme ou Email',
@@ -24,8 +26,10 @@
             name: 'password',
             type: 'password',
             label: 'Mot de passe',
-            regex:
-              /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+            validation: {
+              regex:
+                /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+            },
             errorMessage: 'Merci de préciser un mot de passe correct',
             iconClass: 'required-icon',
             placeholder: 'Mot de passe',

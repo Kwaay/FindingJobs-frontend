@@ -18,6 +18,7 @@
             iconClass: 'required-icon',
             placeholder: 'Username',
             required: true,
+            value: '',
           },
           {
             name: 'email',
@@ -29,6 +30,7 @@
             iconClass: 'required-icon',
             placeholder: 'Email',
             required: true,
+            value: '',
           },
           {
             name: 'password',
@@ -40,17 +42,21 @@
             iconClass: 'required-icon',
             placeholder: 'Mot de passe',
             required: true,
+            value: '',
           },
           {
             name: 'avatar',
             type: 'file',
             label: 'Avatar',
-            regex:
-              /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$/,
+            validation: {
+              type: 'image/gif',
+              size: 52428800
+            },
             errorMessage: 'Merci d\'ajouter un avatar correct',
             iconClass: 'hidden',
             placeholder: 'Avatar',
             required: false,
+            value: '',
           },
           {
             name: 'question',
@@ -62,6 +68,7 @@
             iconClass: 'required-icon',
             placeholder: 'Question de sécurité',
             required: true,
+            value: '',
           },
           {
             name: 'awswer',
@@ -73,10 +80,12 @@
             iconClass: 'required-icon',
             placeholder: 'Réponse',
             required: true,
+            value: '',
           },
         ]"
         display="grid"
-        submitText="Se connecter"
+        submitText="Créer un compte"
+        @submitForm="submit"
       ></Form>
       <p>
         Vous avez déjà un compte ?<br />
@@ -100,7 +109,52 @@ export default {
       password: '',
       question: '',
       awswer: '',
+      avatar: '',
+      user: {},
     };
+  },
+  methods: {
+    submit(dataForm) {
+      console.log('tapîs', dataForm); // eslint-disable-next-line operator-linebreak
+      if (this.avatar) {
+        const formData = new FormData();
+        formData.append('username', dataForm.username);
+        formData.append('email', dataForm.email);
+        formData.append('password', dataForm.password);
+        formData.append('question', dataForm.question);
+        formData.append('awswer', dataForm.awswer);
+        formData.append('avatar', dataForm.awswer);
+
+        return fetch('http://localhost:3000/api/user/signup', {
+          method: 'POST',
+          body: formData,
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            this.user = data;
+            // setTimeout(() => this.$router.push({ name: 'Login' }), 4000);
+            return this.$toast.success(
+              `Successfully Created an User with an Avatar`,
+            );
+          });
+      }
+      return fetch('http://localhost:3000/api/user/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: dataForm.identifiant,
+          password: dataForm.password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          this.user = data;
+          // setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+          return this.$toast.success(`Successfully Logged with an Username`);
+        });
+    },
   },
 };
 </script>
@@ -173,10 +227,6 @@ p {
 
   .container h1 {
     font-size: xx-large;
-  }
-
-  .btn {
-    grid-column: 1/1;
   }
 }
 </style>

@@ -18,6 +18,15 @@
         :placeholder="input.placeholder"
         :class="input.iconClass"
         v-model="values[input.name]"
+        v-if="input.type !== 'file'"
+      />
+      <input
+        v-else
+        :type="input.type"
+        :id="input.name"
+        :name="input.name"
+        :class="input.iconClass"
+        @change="fileHandler"
       />
     </label>
 
@@ -39,7 +48,7 @@ export default {
             name,
             type,
             label,
-            regex,
+            validation,
             errorMessage,
             iconClass,
             placeholder,
@@ -53,7 +62,13 @@ export default {
           if (typeof placeholder !== 'string' || placeholder.length === 0)
             return true;
           if (typeof required !== 'boolean') return true;
-          if (typeof regex === typeof new RegExp(regex)) return false;
+          if (
+            typeof validation !== 'object' ||
+            Object.keys(validation).length === 0
+          )
+            return true;
+          if (typeof validation.regex === typeof new RegExp(validation.regex))
+            return false;
           if (typeof errorMessage !== 'string' || label.length === 0)
             return false;
 
@@ -79,19 +94,72 @@ export default {
   },
   methods: {
     submit() {
+      /* eslint-disable no-restricted-syntax */
       let hasError = false;
 
-      // eslint-disable-next-line no-restricted-syntax
-      for (const input of this.inputs) {
-        console.log(this.values[input.name]);
-        if (!new RegExp(input.regex).test(this.values[input.name])) {
-          this.$toast.error(input.errorMessage);
-          hasError = true;
+      for (const { name, type, validation, errorMessage } of this.inputs) {
+        console.log(this.values[name]);
+        if (
+          (type === 'text' ||
+            type === 'email' ||
+            type === 'password' ||
+            type === 'tel' ||
+            type === 'url' ||
+            type === 'search' ||
+            type === 'color') &&
+          validation?.regex
+        ) {
+          if (!new RegExp(validation.regex).test(this.values[name])) {
+            this.$toast.error(errorMessage);
+            hasError = true;
+          }
         }
+        if (type === 'checkbox' && typeof validation?.status !== 'boolean') {
+          if (this.values[name] !== validation.status) {
+            this.$toast.error(errorMessage);
+            hasError = true;
+          }
+        }
+        if (
+          (type === 'date' ||
+            type === 'datetime-local' ||
+            type === 'month' ||
+            type === 'radio' ||
+            type === 'time') &&
+          typeof validation?.value === 'string'
+        ) {
+          // TODO: Date validation
+          console.log(validation.value);
+        }
+        console.log(name, type === 'file', validation?.type, validation?.size);
+
+        if (type === 'file' && validation?.type && validation?.size) {
+          // TODO: Valider type file
+          console.log('bzgbz');
+          console.log(this.values[name][0].type);
+        }
+        if (
+          (type === 'number' || type === 'range') &&
+          typeof validation?.maxDigits !== 'number'
+        ) {
+          if (
+            typeof this.values[name] === 'number' &&
+            this.values[name].length > validation.maxDigits
+          ) {
+            this.$toast.error(errorMessage);
+            hasError = true;
+          }
+        }
+        //
       }
       if (hasError) return false;
       this.$emit('submitForm', this.values);
       return true;
+    },
+    fileHandler(e) {
+      const { files } = e.target;
+      const inputName = e.target.name;
+      this.values[inputName] = files;
     },
   },
 };
@@ -160,11 +228,12 @@ export default {
   padding-left: 0.5vh;
   font-size: large;
   font-family: Imprima, sans-serif;
+  color: black;
 }
 
 .btn {
   background-color: #3c365d;
-  max-width: 115px;
+  max-width: 150px;
   width: 100%;
   height: 45px;
   color: white;
