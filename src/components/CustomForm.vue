@@ -130,7 +130,7 @@ export default {
     submit() {
       /* eslint-disable no-restricted-syntax */
       let hasError = false;
-      for (const { name, type, validation, errorMessage } of this.inputs) {
+      for (const { name, type, validation } of this.inputs) {
         if (
           (type === 'text' ||
             type === 'email' ||
@@ -223,11 +223,15 @@ export default {
             }
           }
         }
-        if (type === 'radio' && validation?.values) {
-          if (!validation.values.includes(this.values[name])) {
-            this.$toast.error(errorMessage);
-            hasError = true;
-          }
+        if (type === 'radio') {
+          if (Array.isArray(validation?.values))
+            if (
+              typeof !validation?.values.rule === 'object' ||
+              !validation.values.rule.includes(this.values[name])
+            ) {
+              this.$toast.error(validation.values.errorMessage);
+              hasError = true;
+            }
         }
         //
       }
