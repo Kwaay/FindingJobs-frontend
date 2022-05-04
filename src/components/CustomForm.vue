@@ -178,13 +178,23 @@ export default {
         }
         if (type === 'file') {
           for (const file of this.values[name]) {
-            if (validation?.types && !validation.types.includes(file.type)) {
-              this.$toast.error(errorMessage);
-              hasError = true;
+            if (typeof validation?.types === 'object') {
+              if (
+                !Array.isArray(validation.types.rule) ||
+                !validation.types.rule.includes(file.type)
+              ) {
+                this.$toast.error(validation.types.errorMessage);
+                hasError = true;
+              }
             }
-            if (validation?.size && validation.size < file.size) {
-              this.$toast.error(errorMessage);
-              hasError = true;
+            if (typeof validation?.size === 'object') {
+              if (
+                !Number.isNaN(validation.size.rule) ||
+                validation.size.rule < file.size
+              ) {
+                this.$toast.error(validation.size.errorMessage);
+                hasError = true;
+              }
             }
           }
         }
