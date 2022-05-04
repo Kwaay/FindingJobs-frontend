@@ -49,7 +49,6 @@ export default {
             type,
             label,
             validation,
-            errorMessage,
             iconClass,
             placeholder,
             required,
@@ -107,9 +106,6 @@ export default {
             }
             return true;
           }
-          if (typeof errorMessage !== 'string' || label.length === 0)
-            return false;
-
           return false;
         });
         return !validationErrors;
@@ -146,13 +142,14 @@ export default {
           validation?.regex
         ) {
           if (!new RegExp(validation.regex.rule).test(this.values[name])) {
-            this.$toast.error(errorMessage);
+            this.$toast.error(validation.regex.errorMessage);
             hasError = true;
           }
         }
         if (type === 'checkbox' && typeof validation?.status !== 'boolean') {
           if (this.values[name] !== validation.status) {
-            this.$toast.error(errorMessage);
+            // TODO: Check validation status typeof
+            this.$toast.error(validation.status.errorMessage);
             hasError = true;
           }
         }
@@ -162,18 +159,20 @@ export default {
           type === 'month' ||
           type === 'time'
         ) {
-          if (
-            typeof !validation?.minValue === 'string' &&
-            !validation.minValue < this.values[name]
-          ) {
-            this.$toast.error(errorMessage);
+          if (typeof !validation?.minValue === 'object') {
+            if (
+              typeof !validation.minValue.rule === 'string' ||
+              validation.minValue.rule < this.values[name]
+            )
+              this.$toast.error(validation.minValue.errorMessage);
             hasError = true;
           }
-          if (
-            typeof !validation?.maxValue === 'string' &&
-            !validation.maxValue > this.values[name]
-          ) {
-            this.$toast.error(errorMessage);
+          if (typeof !validation?.maxValue === 'object') {
+            if (
+              typeof !validation.maxValue.rule === 'string' ||
+              validation.maxValue.rule > this.values[name]
+            )
+              this.$toast.error(validation.maxValue.errorMessage);
             hasError = true;
           }
         }
@@ -286,6 +285,7 @@ export default {
   border: 1px solid black;
   margin: 10px 0;
   padding-left: 2vh;
+  color: black;
 }
 
 .form ::placeholder {
