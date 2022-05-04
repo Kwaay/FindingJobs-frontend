@@ -13,10 +13,11 @@
             type: 'text',
             label: 'Username',
             validation: {
-              regex:
-                /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$/,
+              regex: {
+                rule: /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$/,
+                errorMessage: 'Merci de préciser un pseudonyme correct',
+              },
             },
-            errorMessage: 'Merci de préciser un pseudonyme correct',
             iconClass: 'required-icon',
             placeholder: 'Username',
             required: true,
@@ -27,10 +28,11 @@
             type: 'text',
             label: 'Email',
             validation: {
-              regex:
-                /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
+              regex: {
+                rule: /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
+                errorMessage: 'Merci de préciser un email correct',
+              },
             },
-            errorMessage: 'Merci de préciser un email correct',
             iconClass: 'required-icon',
             placeholder: 'Email',
             required: true,
@@ -41,10 +43,11 @@
             type: 'password',
             label: 'Mot de passe',
             validation: {
-              regex:
-                /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+              regex: {
+                rule: /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+                errorMessage: 'Merci de préciser un mot de passe correct',
+              },
             },
-            errorMessage: 'Merci de préciser un mot de passe correct',
             iconClass: 'required-icon',
             placeholder: 'Mot de passe',
             required: true,
@@ -55,17 +58,22 @@
             type: 'file',
             label: 'Avatar',
             validation: {
-              types: [
-                'image/jpg',
-                'image/jpeg',
-                'image/png',
-                'image/bmp',
-                'image/svg+xml',
-                'image/gif',
-              ],
-              size: 52428800,
+              types: {
+                rule: [
+                  'image/jpg',
+                  'image/jpeg',
+                  'image/png',
+                  'image/bmp',
+                  'image/svg+xml',
+                  'image/gif',
+                ],
+                errorMessage: 'Merci d\'ajouter un avatar correct',
+              },
+              size: {
+                rule: 52428800,
+                errorMessage: 'La taille de l\'avatar est trop grande',
+              },
             },
-            errorMessage: 'Merci d\'ajouter un avatar correct',
             iconClass: 'hidden',
             placeholder: 'Avatar',
             required: false,
@@ -76,10 +84,12 @@
             type: 'text',
             label: 'Question',
             validation: {
-              regex:
-                /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
+              regex: {
+                rule: /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
+                errorMessage:
+                  'Merci de préciser une question de sécurité correcte',
+              },
             },
-            errorMessage: 'Merci de préciser une question de sécurité correcte',
             iconClass: 'required-icon',
             placeholder: 'Question de sécurité',
             required: true,
@@ -90,10 +100,11 @@
             type: 'text',
             label: 'Question',
             validation: {
-              regex:
-                /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
+              regex: {
+                rule: /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
+                errorMessage: 'Merci de préciser une réponse correcte',
+              },
             },
-            errorMessage: 'Merci de préciser une réponse correcte',
             iconClass: 'required-icon',
             placeholder: 'Réponse',
             required: true,

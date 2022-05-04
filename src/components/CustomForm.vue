@@ -65,10 +65,48 @@ export default {
           if (
             typeof validation !== 'object' ||
             Object.keys(validation).length === 0
-          )
+          ) {
+            if (typeof validation.regex === 'object') {
+              if (
+                typeof validation.regex.rule !== 'object' ||
+                Object.keys(validation.regex.rule).length === 0
+              ) {
+                return true;
+              }
+              if (
+                typeof validation.errorMessage !== 'string' ||
+                validation.errorMessage.length === 0
+              ) {
+                return true;
+              }
+            }
+            if (typeof validation.types === 'object') {
+              if (
+                Array.isArray(validation.types.rule) ||
+                validation.types.rule.length === 0
+              ) {
+                return true;
+              }
+              if (
+                typeof validation.types.errorMessage !== 'string' ||
+                validation.types.errorMessage.length === 0
+              ) {
+                return true;
+              }
+            }
+            if (typeof validation.size === 'object') {
+              if (Number.isNaN(validation.size.rule)) {
+                return true;
+              }
+              if (
+                validation.size.errorMessage !== 'string' ||
+                validation.types.errorMessage.length === 0
+              ) {
+                return true;
+              }
+            }
             return true;
-          if (typeof validation.regex === typeof new RegExp(validation.regex))
-            return false;
+          }
           if (typeof errorMessage !== 'string' || label.length === 0)
             return false;
 
@@ -107,7 +145,7 @@ export default {
             type === 'color') &&
           validation?.regex
         ) {
-          if (!new RegExp(validation.regex).test(this.values[name])) {
+          if (!new RegExp(validation.regex.rule).test(this.values[name])) {
             this.$toast.error(errorMessage);
             hasError = true;
           }
