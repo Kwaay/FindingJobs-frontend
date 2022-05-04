@@ -12,8 +12,10 @@
             name: 'username',
             type: 'text',
             label: 'Username',
-            regex:
-              /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$/,
+            validation: {
+              regex:
+                /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$/,
+            },
             errorMessage: 'Merci de préciser un pseudonyme correct',
             iconClass: 'required-icon',
             placeholder: 'Username',
@@ -24,8 +26,10 @@
             name: 'email',
             type: 'text',
             label: 'Email',
-            regex:
-              /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
+            validation: {
+              regex:
+                /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
+            },
             errorMessage: 'Merci de préciser un email correct',
             iconClass: 'required-icon',
             placeholder: 'Email',
@@ -36,8 +40,10 @@
             name: 'password',
             type: 'password',
             label: 'Mot de passe',
-            regex:
-              /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+            validation: {
+              regex:
+                /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+            },
             errorMessage: 'Merci de préciser un mot de passe correct',
             iconClass: 'required-icon',
             placeholder: 'Mot de passe',
@@ -49,8 +55,15 @@
             type: 'file',
             label: 'Avatar',
             validation: {
-              type: 'image/gif',
-              size: 52428800
+              types: [
+                'image/jpg',
+                'image/jpeg',
+                'image/png',
+                'image/bmp',
+                'image/svg+xml',
+                'image/gif',
+              ],
+              size: 52428800,
             },
             errorMessage: 'Merci d\'ajouter un avatar correct',
             iconClass: 'hidden',
@@ -62,8 +75,10 @@
             name: 'question',
             type: 'text',
             label: 'Question',
-            regex:
-              /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
+            validation: {
+              regex:
+                /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
+            },
             errorMessage: 'Merci de préciser une question de sécurité correcte',
             iconClass: 'required-icon',
             placeholder: 'Question de sécurité',
@@ -74,8 +89,10 @@
             name: 'awswer',
             type: 'text',
             label: 'Question',
-            regex:
-              /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
+            validation: {
+              regex:
+                /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
+            },
             errorMessage: 'Merci de préciser une réponse correcte',
             iconClass: 'required-icon',
             placeholder: 'Réponse',

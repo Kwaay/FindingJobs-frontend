@@ -96,9 +96,7 @@ export default {
     submit() {
       /* eslint-disable no-restricted-syntax */
       let hasError = false;
-
       for (const { name, type, validation, errorMessage } of this.inputs) {
-        console.log(this.values[name]);
         if (
           (type === 'text' ||
             type === 'email' ||
@@ -121,31 +119,59 @@ export default {
           }
         }
         if (
-          (type === 'date' ||
-            type === 'datetime-local' ||
-            type === 'month' ||
-            type === 'radio' ||
-            type === 'time') &&
-          typeof validation?.value === 'string'
+          type === 'date' ||
+          type === 'datetime-local' ||
+          type === 'month' ||
+          type === 'time'
         ) {
-          // TODO: Date validation
-          console.log(validation.value);
+          if (
+            typeof !validation?.minValue === 'string' &&
+            !validation.minValue < this.values[name]
+          ) {
+            this.$toast.error(errorMessage);
+            hasError = true;
+          }
+          if (
+            typeof !validation?.maxValue === 'string' &&
+            !validation.maxValue > this.values[name]
+          ) {
+            this.$toast.error(errorMessage);
+            hasError = true;
+          }
         }
-        console.log(name, type === 'file', validation?.type, validation?.size);
-
-        if (type === 'file' && validation?.type && validation?.size) {
-          // TODO: Valider type file
-          console.log('bzgbz');
-          console.log(this.values[name][0].type);
+        if (type === 'file') {
+          for (const file of this.values[name]) {
+            if (validation?.types && !validation.types.includes(file.type)) {
+              this.$toast.error(errorMessage);
+              hasError = true;
+            }
+            if (validation?.size && validation.size < file.size) {
+              this.$toast.error(errorMessage);
+              hasError = true;
+            }
+          }
         }
         if (
           (type === 'number' || type === 'range') &&
-          typeof validation?.maxDigits !== 'number'
+          typeof this.values[name] === 'number' &&
+          validation?.minValue === 'string' &&
+          validation?.maxValue === 'string'
         ) {
-          if (
-            typeof this.values[name] === 'number' &&
-            this.values[name].length > validation.maxDigits
-          ) {
+          if (!Number.isNaN(this.values[name])) {
+            this.$toast.error(errorMessage);
+            hasError = true;
+          }
+          if (this.values[name] < validation?.minValue) {
+            this.$toast.error(errorMessage);
+            hasError = true;
+          }
+          if (this.values[name] > validation?.maxValue) {
+            this.$toast.error(errorMessage);
+            hasError = true;
+          }
+        }
+        if (type === 'radio' && validation?.values) {
+          if (!validation.values.includes(this.values[name])) {
             this.$toast.error(errorMessage);
             hasError = true;
           }
