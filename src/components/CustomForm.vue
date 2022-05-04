@@ -200,21 +200,27 @@ export default {
         }
         if (
           (type === 'number' || type === 'range') &&
-          typeof this.values[name] === 'number' &&
-          validation?.minValue === 'string' &&
-          validation?.maxValue === 'string'
+          !Number.isNaN(this.values[name])
         ) {
-          if (!Number.isNaN(this.values[name])) {
-            this.$toast.error(errorMessage);
-            hasError = true;
-          }
-          if (this.values[name] < validation?.minValue) {
-            this.$toast.error(errorMessage);
-            hasError = true;
-          }
-          if (this.values[name] > validation?.maxValue) {
-            this.$toast.error(errorMessage);
-            hasError = true;
+          if (
+            validation?.minValue === 'object' &&
+            validation?.maxValue === 'object'
+          ) {
+            if (
+              !Number.isNaN(validation.minValue.rule) ||
+              this.values[name] < validation.minValue.rule
+            ) {
+              this.$toast.error(validation.minValue.errorMessage);
+              hasError = true;
+            }
+            if (
+              // TODO: Check MP Stan
+              !Number.isNaN(validation.maxValue.rule) ||
+              this.values[name] > validation.maxValue.rule
+            ) {
+              this.$toast.error(validation.maxValue.errorMessage);
+              hasError = true;
+            }
           }
         }
         if (type === 'radio' && validation?.values) {
