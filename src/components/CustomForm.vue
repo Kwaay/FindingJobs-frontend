@@ -41,9 +41,12 @@ export default {
       type: Array,
       required: true,
       validator(value) {
+        console.log('-2');
         if (!Array.isArray(value)) return false;
+        console.log('-1');
         const validationErrors = value.some((input) => {
-          if (typeof input !== 'object') return false;
+          console.log('0');
+          if (typeof input !== 'object') return true;
           const {
             name,
             type,
@@ -53,56 +56,59 @@ export default {
             placeholder,
             required,
           } = input;
+          console.log('1');
           if (typeof name !== 'string' || name.length === 0) return true;
+          console.log('2');
           if (typeof type !== 'string' || type.length === 0) return true;
+          console.log('3');
           if (typeof label !== 'string' || label.length === 0) return true;
+          console.log('4');
           if (typeof iconClass !== 'string' || iconClass.length === 0)
             return true;
+          console.log('5');
           if (typeof placeholder !== 'string' || placeholder.length === 0)
             return true;
+          console.log('6');
           if (typeof required !== 'boolean') return true;
+          console.log('7');
           if (
             typeof validation !== 'object' ||
             Object.keys(validation).length === 0
           ) {
-            if (typeof validation.regex === 'object') {
-              if (
-                typeof validation.regex.rule !== 'object' ||
-                Object.keys(validation.regex.rule).length === 0
-              ) {
-                return true;
-              }
-              if (
-                typeof validation.errorMessage !== 'string' ||
-                validation.errorMessage.length === 0
-              ) {
-                return true;
-              }
+            console.log('8');
+            const { regex, types, size, min, max } = validation;
+            console.log('9');
+            console.log(typeof regex);
+            console.log('10');
+            if (
+              typeof regex === 'object' &&
+              !this.isRegexValidationRuleValid(regex)
+            ) {
+              return true;
             }
-            if (typeof validation.types === 'object') {
-              if (
-                Array.isArray(validation.types.rule) ||
-                validation.types.rule.length === 0
-              ) {
-                return true;
-              }
-              if (
-                typeof validation.types.errorMessage !== 'string' ||
-                validation.types.errorMessage.length === 0
-              ) {
-                return true;
-              }
+            if (
+              typeof types === 'object' &&
+              !this.isTypesValidationRuleValid(types)
+            ) {
+              return true;
             }
-            if (typeof validation.size === 'object') {
-              if (Number.isNaN(validation.size.rule)) {
-                return true;
-              }
-              if (
-                validation.size.errorMessage !== 'string' ||
-                validation.types.errorMessage.length === 0
-              ) {
-                return true;
-              }
+            if (
+              typeof size === 'object' &&
+              !this.isSizeValidationRuleValid(size)
+            ) {
+              return true;
+            }
+            if (
+              typeof min === 'object' &&
+              !this.isSizeValidationRuleValid(min)
+            ) {
+              return true;
+            }
+            if (
+              typeof max === 'object' &&
+              !this.isMaxValidationRuleValid(max)
+            ) {
+              return true;
             }
             return true;
           }
@@ -146,7 +152,7 @@ export default {
             hasError = true;
           }
         }
-        if (type === 'checkbox' && typeof validation?.status !== 'boolean') {
+        if (type === 'checkbox' && typeof validation?.status === 'boolean') {
           if (this.values[name] !== validation.status) {
             // TODO: Check validation status typeof
             this.$toast.error(validation.status.errorMessage);
@@ -189,9 +195,13 @@ export default {
             }
             if (typeof validation?.size === 'object') {
               if (
-                !Number.isNaN(validation.size.rule) ||
+                !Number.isNaN(Number(validation.size.rule)) &&
                 validation.size.rule < file.size
               ) {
+                console.log('1', !Number.isNaN(Number(validation.size.rule)));
+                console.log('2', validation.size.rule);
+                console.log('3', file.size);
+                console.log('4', validation.size.rule < file.size);
                 this.$toast.error(validation.size.errorMessage);
                 hasError = true;
               }
@@ -200,24 +210,17 @@ export default {
         }
         if (
           (type === 'number' || type === 'range') &&
-          !Number.isNaN(this.values[name])
+          !Number.isNaN(Number(this.values[name]))
         ) {
           if (
             validation?.minValue === 'object' &&
             validation?.maxValue === 'object'
           ) {
-            if (
-              !Number.isNaN(validation.minValue.rule) ||
-              this.values[name] < validation.minValue.rule
-            ) {
+            if (this.values[name] < validation.minValue.rule) {
               this.$toast.error(validation.minValue.errorMessage);
               hasError = true;
             }
-            if (
-              // TODO: Check MP Stan
-              !Number.isNaN(validation.maxValue.rule) ||
-              this.values[name] > validation.maxValue.rule
-            ) {
+            if (this.values[name] > validation.maxValue.rule) {
               this.$toast.error(validation.maxValue.errorMessage);
               hasError = true;
             }
@@ -242,7 +245,47 @@ export default {
     fileHandler(e) {
       const { files } = e.target;
       const inputName = e.target.name;
-      this.values[inputName] = files;
+      this.values[inputName] = e.target.multiple ? files : files[0];
+    },
+    isRegexValidationRuleValid({ rule, errorMessage }) {
+      console.log('1', typeof rule);
+      console.log('2', typeof new RegExp(rule));
+      if (rule !== new RegExp(rule)) {
+        return false;
+      }
+
+      if (typeof errorMessage !== 'string' || errorMessage.length === 0) {
+        return false;
+      }
+      return true;
+    },
+    isTypesValidationRuleValid({ rule, errorMessage }) {
+      if (Array.isArray(rule) || rule.length === 0) return false;
+      if (typeof errorMessage !== 'string' || errorMessage.length === 0) {
+        return false;
+      }
+      return true;
+    },
+    isSizeValidationRuleValid({ rule, errorMessage }) {
+      if (Number.isNaN(Number(rule))) return false;
+      if (typeof errorMessage !== 'string' || errorMessage.length === 0) {
+        return false;
+      }
+      return true;
+    },
+    isMinValidationRuleValid({ rule, errorMessage }) {
+      if (Number.isNaN(Number(rule))) return false;
+      if (typeof errorMessage !== 'string' || errorMessage.length === 0) {
+        return false;
+      }
+      return true;
+    },
+    isMaxValidationRuleValid({ rule, errorMessage }) {
+      if (Number.isNaN(Number(rule))) return false;
+      if (typeof errorMessage !== 'string' || errorMessage.length === 0) {
+        return false;
+      }
+      return true;
     },
   },
 };

@@ -130,36 +130,24 @@ import Form from '../components/CustomForm.vue';
 
 export default {
   components: { Form },
-  data() {
-    return {
-      username: '',
-      email: '',
-      password: '',
-      question: '',
-      awswer: '',
-      avatar: '',
-      user: {},
-    };
-  },
   methods: {
     submit(dataForm) {
       console.log('tapîs', dataForm); // eslint-disable-next-line operator-linebreak
-      if (this.avatar) {
+      if (dataForm.avatar) {
         const formData = new FormData();
         formData.append('username', dataForm.username);
         formData.append('email', dataForm.email);
         formData.append('password', dataForm.password);
         formData.append('question', dataForm.question);
         formData.append('awswer', dataForm.awswer);
-        formData.append('avatar', dataForm.awswer);
+        formData.append('avatar', dataForm.avatar[0]);
 
         return fetch('http://localhost:3000/api/user/signup', {
           method: 'POST',
           body: formData,
         })
           .then((response) => response.json())
-          .then((data) => {
-            this.user = data;
+          .then(() => {
             // setTimeout(() => this.$router.push({ name: 'Login' }), 4000);
             return this.$toast.success(
               `Successfully Created an User with an Avatar`,
@@ -172,15 +160,19 @@ export default {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          username: dataForm.identifiant,
+          username: dataForm.username,
+          email: dataForm.email,
           password: dataForm.password,
+          question: dataForm.question,
+          awswer: dataForm.awswer,
         }),
       })
         .then((response) => response.json())
-        .then((data) => {
-          this.user = data;
+        .then(() => {
           // setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
-          return this.$toast.success(`Successfully Logged with an Username`);
+          return this.$toast.success(
+            `Successfully Created an User with an Username`,
+          );
         });
     },
   },
