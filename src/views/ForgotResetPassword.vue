@@ -12,38 +12,51 @@
             name: 'email',
             type: 'text',
             label: 'Email',
-            regex:
-              /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
-            errorMessage: 'Merci de préciser un email correct',
+            validation: {
+              regex: {
+                rule: /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
+                errorMessage: 'Merci de préciser un email correct',
+              },
+            },
             iconClass: 'required-icon',
             placeholder: 'Email lié à votre compte',
             required: true,
+            value: '',
           },
           {
             name: 'awswer',
             type: 'text',
             label: 'Réponse',
-            regex:
-              /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ,.'/_-]{4,15}$/,
-            errorMessage: 'Merci de préciser une réponse correcte',
+            validation: {
+              regex: {
+                rule: /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ,.'/_-]{4,15}$/,
+                errorMessage: 'Merci de préciser une réponse correcte',
+              },
+            },
             iconClass: 'required-icon',
             placeholder: 'Réponse à la question de sécurité',
             required: true,
+            value: '',
           },
           {
             name: 'password',
             type: 'text',
             label: 'Nouveau mot de passe',
-            regex:
-              /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
-            errorMessage: 'Merci de préciser un mot de passe correct',
+            validation: {
+              regex: {
+                rule: /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
+                errorMessage: 'Merci de préciser un mot de passe correct',
+              },
+            },
             iconClass: 'required-icon',
             placeholder: 'Mot de passe',
             required: true,
+            value: '',
           },
         ]"
         display="flex"
         submitText="Envoyer"
+        @submitForm="submit"
       ></Form>
 
       <p>
@@ -62,12 +75,25 @@ export default {
   components: {
     Form,
   },
-  data() {
-    return {
-      email: '',
-      awswer: '',
-      password: '',
-    };
+  methods: {
+    submit(dataForm) {
+      return fetch('http://localhost:3000/api/user/forgot/modify', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: dataForm.username,
+          awswer: dataForm.awswer,
+          password: dataForm.password,
+        }),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          // setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+          return this.$toast.success(`Successfully Modified your Password`);
+        });
+    },
   },
 };
 </script>

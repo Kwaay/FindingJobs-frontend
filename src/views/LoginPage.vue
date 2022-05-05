@@ -61,12 +61,6 @@ export default {
   components: {
     Form,
   },
-  data() {
-    return {
-      identifiant: '',
-      password: '',
-    };
-  },
   methods: {
     submit(dataForm) {
       console.log('tapîs', dataForm);

@@ -17,10 +17,13 @@
                 rule: /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ_-]{4,20}$/,
                 errorMessage: 'Merci de préciser un pseudonyme correct',
               },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ username est requis',
+              },
             },
             iconClass: 'required-icon',
             placeholder: 'Username',
-            required: true,
             value: '',
           },
           {
@@ -32,10 +35,13 @@
                 rule: /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
                 errorMessage: 'Merci de préciser un email correct',
               },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ email est requis',
+              },
             },
             iconClass: 'required-icon',
             placeholder: 'Email',
-            required: true,
             value: '',
           },
           {
@@ -46,6 +52,10 @@
               regex: {
                 rule: /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
                 errorMessage: 'Merci de préciser un mot de passe correct',
+              },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ password est requis',
               },
             },
             iconClass: 'required-icon',
@@ -73,10 +83,13 @@
                 rule: 52428800,
                 errorMessage: 'La taille de l\'avatar est trop grande',
               },
+              required: {
+                rule: false,
+                errorMessage: 'Il y\'a eu un problème, réessayez',
+              },
             },
             iconClass: 'hidden',
             placeholder: 'Avatar',
-            required: false,
             value: '',
           },
           {
@@ -89,25 +102,31 @@
                 errorMessage:
                   'Merci de préciser une question de sécurité correcte',
               },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ question est requis',
+              },
             },
             iconClass: 'required-icon',
             placeholder: 'Question de sécurité',
-            required: true,
             value: '',
           },
           {
             name: 'awswer',
             type: 'text',
-            label: 'Question',
+            label: 'Réponse',
             validation: {
               regex: {
                 rule: /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ',.?/-]{4,15}$/,
                 errorMessage: 'Merci de préciser une réponse correcte',
               },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ réponse est requis',
+              },
             },
             iconClass: 'required-icon',
             placeholder: 'Réponse',
-            required: true,
             value: '',
           },
         ]"
@@ -140,7 +159,7 @@ export default {
         formData.append('password', dataForm.password);
         formData.append('question', dataForm.question);
         formData.append('awswer', dataForm.awswer);
-        formData.append('avatar', dataForm.avatar[0]);
+        formData.append('avatar', dataForm.avatar);
 
         return fetch('http://localhost:3000/api/user/signup', {
           method: 'POST',

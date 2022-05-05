@@ -12,16 +12,21 @@
             name: 'email',
             type: 'text',
             label: 'Email',
-            regex:
-              /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
-            errorMessage: 'Merci de préciser un email correct',
+            validation: {
+              regex: {
+                rule: /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
+                errorMessage: 'Merci de préciser un email correct',
+              },
+            },
             iconClass: 'required-icon',
             placeholder: 'Email lié à votre compte',
             required: true,
+            value: '',
           },
         ]"
         display="flex"
         submitText="Envoyer"
+        @submitForm="submit"
       ></Form>
 
       <p>
@@ -40,10 +45,25 @@ export default {
   components: {
     Form,
   },
-  data() {
-    return {
-      email: '',
-    };
+  methods: {
+    submit(dataForm) {
+      return fetch('http://localhost:3000/api/user/forgot', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: dataForm.email,
+        }),
+      })
+        .then((response) => response.json())
+        .then(() => {
+          // setTimeout(() => this.$router.push({ name: 'ResetPassword' }), 4000);
+          return this.$toast.success(
+            `Successfully Found your Account, please wait for redirection`,
+          );
+        });
+    },
   },
 };
 </script>
