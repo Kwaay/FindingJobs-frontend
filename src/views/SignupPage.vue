@@ -83,10 +83,6 @@
                 rule: 52428800,
                 errorMessage: 'La taille de l\'avatar est trop grande',
               },
-              required: {
-                rule: false,
-                errorMessage: 'Il y\'a eu un problème, réessayez',
-              },
             },
             iconClass: 'hidden',
             placeholder: 'Avatar',

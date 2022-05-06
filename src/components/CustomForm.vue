@@ -75,7 +75,7 @@ const isMaxValidationRuleValid = ({ rule, errorMessage }) => {
 };
 const isRequiredValidationRuleValid = ({ rule, errorMessage }) => {
   if (typeof rule !== 'boolean') return false;
-  if (typeof errorMessage !== 'string' || errorMessage.length === 0) {
+  if (rule && (typeof errorMessage !== 'string' || errorMessage.length === 0)) {
     return false;
   }
   return true;
@@ -152,10 +152,18 @@ export default {
   },
   methods: {
     submit() {
-      // TODO: Rajouter required condition
       /* eslint-disable no-restricted-syntax */
       let hasError = false;
       for (const { name, type, validation } of this.inputs) {
+        // eslint-disable-next-line no-continue
+        if (!(validation?.required?.rule || this.values[name])) continue;
+        if (
+          validation?.required?.rule &&
+          typeof this.values[name] === 'undefined'
+        ) {
+          this.$toast.error(validation.required.errorMessage);
+          hasError = true;
+        }
         if (
           (type === 'text' ||
             type === 'email' ||
@@ -173,7 +181,6 @@ export default {
         }
         if (type === 'checkbox' && typeof validation?.status === 'boolean') {
           if (this.values[name] !== validation.status) {
-            // TODO: Check validation status typeof
             this.$toast.error(validation.status.errorMessage);
             hasError = true;
           }
