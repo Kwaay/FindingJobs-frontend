@@ -17,10 +17,13 @@
                 rule: /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
                 errorMessage: 'Merci de préciser un email correct',
               },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ email est requis',
+              },
             },
             iconClass: 'required-icon',
             placeholder: 'Email lié à votre compte',
-            required: true,
             value: '',
           },
         ]"

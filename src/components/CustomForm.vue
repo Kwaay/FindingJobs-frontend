@@ -152,6 +152,7 @@ export default {
   },
   methods: {
     submit() {
+      // TODO: Rajouter required condition
       /* eslint-disable no-restricted-syntax */
       let hasError = false;
       for (const { name, type, validation } of this.inputs) {

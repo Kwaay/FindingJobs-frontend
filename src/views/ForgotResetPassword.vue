@@ -17,10 +17,13 @@
                 rule: /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi,
                 errorMessage: 'Merci de préciser un email correct',
               },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ email est requis',
+              },
             },
             iconClass: 'required-icon',
             placeholder: 'Email lié à votre compte',
-            required: true,
             value: '',
           },
           {
@@ -32,10 +35,13 @@
                 rule: /^[a-zA-Z0-9àèìòùÀÈÌÒÙáéíóúýÁÉÍÓÚÝâêîôûÂÊÎÔÛãñõÃÑÕäëïöüÿÄËÏÖÜŸçÇßØøÅåÆæœ,.'/_-]{4,15}$/,
                 errorMessage: 'Merci de préciser une réponse correcte',
               },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ awswer est requis',
+              },
             },
             iconClass: 'required-icon',
             placeholder: 'Réponse à la question de sécurité',
-            required: true,
             value: '',
           },
           {
@@ -47,10 +53,13 @@
                 rule: /^(?=.*\d)(?=.*[A-Z])(?=.*[a-z])(?=.*[^\w\d\s:])([^\s]){8,16}$/,
                 errorMessage: 'Merci de préciser un mot de passe correct',
               },
+              required: {
+                rule: true,
+                errorMessage: 'Le champ password est requis',
+              },
             },
             iconClass: 'required-icon',
             placeholder: 'Mot de passe',
-            required: true,
             value: '',
           },
         ]"
