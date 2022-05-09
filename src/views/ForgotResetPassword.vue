@@ -2,7 +2,7 @@
   <main>
     <div class="container">
       <img
-        src="../../public/img/colored_logo_white.svg"
+        src="../assets/img/colored_logo_white.svg"
         alt="Logo de FindingJobs avec texte blanc"
       />
       <h1>Modification de mot de passe</h1>

@@ -2,7 +2,7 @@
   <main>
     <div class="container">
       <img
-        src="../../public/img/colored_logo_white.svg"
+        src="../assets/img/colored_logo_white.svg"
         alt="Logo de FindingJobs avec texte blanc"
       />
       <h1>Connexion</h1>
@@ -85,7 +85,12 @@ export default {
           .then((response) => response.json())
           .then((data) => {
             this.user = data;
-            // setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+            const tokenData = {
+              token: data.token,
+              date: Date.now(),
+            };
+            this.$store.dispatch('saveToken', tokenData);
+            setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
             return this.$toast.success(`Successfully Logged with an Email`);
           });
       }
@@ -100,7 +105,12 @@ export default {
         .then((response) => response.json())
         .then((data) => {
           this.user = data;
-          // setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+          const tokenData = {
+            token: data.token,
+            date: Date.now(),
+          };
+          this.$store.dispatch('saveToken', tokenData);
+          setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
           return this.$toast.success(`Successfully Logged with an Username`);
         });
     },
