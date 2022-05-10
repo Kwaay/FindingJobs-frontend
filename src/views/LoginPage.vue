@@ -69,7 +69,6 @@ export default {
   },
   methods: {
     submit(dataForm) {
-      console.log('tapîs', dataForm);
       // eslint-disable-next-line operator-linebreak
       const regexEmail =
         /((?:[\w-]+(?:\.[\w-]+)*)@(?:[\w-]+(?:\.[\w-]+)*)\.(?:[a-z.]{2,}))/gi;
@@ -90,7 +89,7 @@ export default {
               date: Date.now(),
             };
             this.$store.dispatch('saveToken', tokenData);
-            setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+            this.storeConnectedUser();
             return this.$toast.success(`Successfully Logged with an Email`);
           });
       }
@@ -110,8 +109,29 @@ export default {
             date: Date.now(),
           };
           this.$store.dispatch('saveToken', tokenData);
-          setTimeout(() => this.$router.push({ name: 'Accueil' }), 4000);
+          this.storeConnectedUser();
           return this.$toast.success(`Successfully Logged with an Username`);
+        });
+    },
+    storeConnectedUser() {
+      const { token } = this.$store.state.token;
+      fetch('http://localhost:3000/api/user/me', {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer: ${token}`,
+          'Content-Type': 'application/json',
+        },
+      })
+        .then((response) => response.json())
+        .then((user) => {
+          console.log(user);
+          this.$store.dispatch('saveConnectedUser', user);
+          this.$router.push({ name: 'Accueil' });
+        })
+        .catch(() => {
+          return this.$toast.error(
+            'Failed to get informations about the connected user',
+          );
         });
     },
   },
