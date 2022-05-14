@@ -81,6 +81,7 @@ router.beforeEach((to, from, next) => {
   if (tokenData === null) return next({ name: 'Login' });
 
   const { token, time } = store.state.token || {};
+
   if (token === undefined || token.length < 1) {
     return next({ name: 'Login' });
   }

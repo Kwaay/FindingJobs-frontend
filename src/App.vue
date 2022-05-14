@@ -14,6 +14,12 @@ body {
   margin: 0;
 }
 
+main {
+  width: 100%;
+  height: 100vh;
+  background-color: #232439;
+}
+
 #app {
   font-family: Imprima, sans-serif;
 }

@@ -86,7 +86,7 @@ export default {
             this.user = data;
             const tokenData = {
               token: data.token,
-              date: Date.now(),
+              time: Date.now(),
             };
             this.$store.dispatch('saveToken', tokenData);
             this.storeConnectedUser();
@@ -106,7 +106,7 @@ export default {
           this.user = data;
           const tokenData = {
             token: data.token,
-            date: Date.now(),
+            time: Date.now(),
           };
           this.$store.dispatch('saveToken', tokenData);
           this.storeConnectedUser();
@@ -124,7 +124,6 @@ export default {
       })
         .then((response) => response.json())
         .then((user) => {
-          console.log(user);
           this.$store.dispatch('saveConnectedUser', user);
           this.$router.push({ name: 'Accueil' });
         })

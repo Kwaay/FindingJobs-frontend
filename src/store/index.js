@@ -18,7 +18,6 @@ export default createStore({
       localStorage.setItem('token', JSON.stringify(null));
     },
     SET_CONNECTED_USER(state, user) {
-      console.log(user);
       state.connectedUser = user;
       localStorage.setItem('connectedUser', JSON.stringify(user));
     },
@@ -33,7 +32,6 @@ export default createStore({
       context.commit('SET_TOKEN', token);
     },
     saveConnectedUser(context, user) {
-      console.log(user);
       context.commit('SET_CONNECTED_USER', user);
     },
     logout(context) {

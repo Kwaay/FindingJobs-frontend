@@ -3,10 +3,6 @@
     <Header
       :buttons="[
         {
-          name: 'Accueil',
-          content: 'Home',
-        },
-        {
           name: 'Jobs',
           content: 'Jobs',
         },
@@ -29,10 +25,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss">
-main {
-  width: 100%;
-  height: 100vh;
-  background-color: #232439;
-}
-</style>
+<style scoped lang="scss"></style>

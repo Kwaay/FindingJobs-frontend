@@ -1,10 +1,12 @@
 <template>
   <header>
-    <img
-      src="../assets/img/colored_logo_white.svg"
-      alt="Logo de FindingJobs"
-      class="logo-img"
-    />
+    <router-link :to="{ name: 'Accueil' }">
+      <img
+        src="../assets/img/colored_logo_white.svg"
+        alt="Logo de FindingJobs"
+        class="logo-img"
+      />
+    </router-link>
     <nav>
       <router-link
         v-for="button in buttons"
