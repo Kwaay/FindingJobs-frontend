@@ -9,13 +9,18 @@
       <i class="fas fa-sort-up" v-else></i>
     </div>
     <div class="dropdown" v-if="this.toggleDropdown">
-      <div class="stackTypes" v-for="type in types" :key="type.index">
-        <h4>{{ type }}</h4>
+      <div class="list-types" v-for="group in Object.keys(stacks)" :key="group">
+        <h4>{{ group }}</h4>
+        <div class="option" v-for="stack in stacks[group]" :key="stack.id">
+          <img :src="stack.logo" :alt="stack.name" />
+          <p>{{ stack.name }}</p>
+        </div>
       </div>
-      <div class="option" v-for="option in options" :key="option.id">
-        <img :src="option.logo" :alt="option.name" />
-        <p>{{ option.name }}</p>
-      </div>
+      <!-- 
+        TODO:
+        Rajouter une classe hidden quand sélectionné, et le push dans un tableau
+        dès que je push dans un tableau, je emit piur dire qu ça a été mis à jour
+      -->
     </div>
   </div>
 </template>
@@ -32,15 +37,15 @@ export default {
       type: Object,
       required: true,
     },
-    types: {
-      type: Array,
+    stacks: {
+      type: Object,
       required: true,
     },
   },
 };
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .placeholder {
   border: 1px solid blue;
   display: flex;
@@ -74,5 +79,23 @@ export default {
   align-items: center;
   padding-left: 8px;
   color: white;
+}
+
+.list-types {
+  text-align: left;
+  color: white;
+  padding: 8px;
+  position: relative;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 2px;
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    transition: width 0.2s ease-in-out;
+    width: 100%;
+  }
 }
 </style>

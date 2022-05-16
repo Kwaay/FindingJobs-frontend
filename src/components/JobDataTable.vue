@@ -69,7 +69,7 @@
           </legend>
           <CustomSelect
             :options="this.stacks"
-            :types="this.types"
+            :stacks="this.groupedStacks"
           ></CustomSelect>
         </fieldset>
       </form>
@@ -87,8 +87,7 @@ export default {
   data() {
     return {
       jobs: {},
-      stacks: {},
-      types: [],
+      stacks: [],
     };
   },
   created() {
@@ -127,21 +126,24 @@ export default {
         .then((stacks) => {
           console.log(stacks);
           this.stacks = stacks;
-          this.getTypes(this.stacks);
         })
         .catch((error) => {
           return this.$toast.error(error);
         });
     },
-    getTypes(data) {
-      data.forEach((e) => {
-        console.log(e.type);
-        if (this.types.includes(e.type)) {
-          return;
+  },
+  computed: {
+    groupedStacks() {
+      const types = {};
+      this.stacks.forEach((e) => {
+        const existingTypes = Object.keys(types);
+        const { type } = e;
+        if (!existingTypes.includes(type)) {
+          types[type] = [];
         }
-        this.types.push(e.type);
+        types[type].push(e);
       });
-      return true;
+      return types;
     },
   },
 };
