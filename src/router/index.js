@@ -85,7 +85,8 @@ router.beforeEach((to, from, next) => {
   if (token === undefined || token.length < 1) {
     return next({ name: 'Login' });
   }
-
+  console.log(Number(time));
+  console.log(time + 86400000);
   if (time > time + 86400000) {
     return next({ name: 'Login' });
   }

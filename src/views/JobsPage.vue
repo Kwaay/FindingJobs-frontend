@@ -46,9 +46,4 @@ export default {
 .title p {
   font-weight: lighter;
 }
-
-.jobs {
-  height: 100vh;
-  background-color: #2b2b46;
-}
 </style>
