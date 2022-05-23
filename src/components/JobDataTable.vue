@@ -67,9 +67,16 @@
           <legend>
             <h3>Stacks</h3>
           </legend>
+          <div class="filters-tags-list">
+            <p @click="removeAllTags()">Tout supprimer</p>
+            <div class="tags" v-for="tag in taggedStacks" :key="tag">
+              <span>{{ tag.name }}</span>
+              <i class="fas fa-times" @click="deleteTag(tag)"></i>
+            </div>
+          </div>
           <CustomSelect
-            :options="this.stacks"
-            :stacks="this.groupedStacks"
+            :stacks="this.stacks"
+            @refreshStacks="refreshStacks"
           ></CustomSelect>
         </fieldset>
       </form>
@@ -87,7 +94,8 @@ export default {
   data() {
     return {
       jobs: {},
-      stacks: [],
+      stacks: {},
+      tags: [],
     };
   },
   created() {
@@ -124,26 +132,56 @@ export default {
       })
         .then((response) => response.json())
         .then((stacks) => {
-          console.log(stacks);
-          this.stacks = stacks;
+          this.groupStacks(stacks);
         })
         .catch((error) => {
           return this.$toast.error(error);
         });
     },
-  },
-  computed: {
-    groupedStacks() {
+    refreshStacks(stacks) {
+      this.stacks = stacks;
+    },
+    groupStacks(stacks) {
       const types = {};
-      this.stacks.forEach((e) => {
+      stacks.forEach((e) => {
         const existingTypes = Object.keys(types);
         const { type } = e;
         if (!existingTypes.includes(type)) {
           types[type] = [];
         }
-        types[type].push(e);
+        types[type].push({
+          visible: true,
+          tagged: false,
+          ...e,
+        });
       });
-      return types;
+      this.stacks = types;
+    },
+    deleteTag(tag) {
+      const stack = this.stacks[tag.type].find((s) => s.id === tag.id);
+      stack.tagged = false;
+    },
+    removeAllTags() {
+      const keys = Object.keys(this.stacks);
+      keys.forEach((key) => {
+        const groups = this.stacks[key];
+        groups.forEach((stack) => {
+          // eslint-disable-next-line no-param-reassign
+          stack.tagged = false;
+        });
+      });
+    },
+  },
+  computed: {
+    taggedStacks() {
+      const taggedStacks = [];
+      const keys = Object.keys(this.stacks);
+      keys.forEach((key) => {
+        const group = this.stacks[key];
+        const taggedStacksFromGroup = group.filter((stack) => stack.tagged);
+        taggedStacks.push(...taggedStacksFromGroup);
+      });
+      return taggedStacks;
     },
   },
 };
@@ -205,11 +243,44 @@ export default {
   width: 100%;
   position: absolute;
   padding: 0 15px;
+  overflow-x: scroll;
 }
 
 .filters h2 {
   padding: 2vh;
   color: white;
+}
+
+.filters-tags-list {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.filters-tags-list p {
+  border: 1px solid white;
+  color: white;
+  padding: 8px;
+  border-radius: 20px;
+}
+
+.tags {
+  background-color: #a89df7;
+  color: white;
+  border-radius: 30px;
+  padding: 0.5vh;
+  flex-wrap: wrap;
+  max-width: 100px;
+  font-size: small;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin: 0.5vh;
+}
+
+.tags span {
+  margin: 0.2vh;
 }
 
 .filters-form {

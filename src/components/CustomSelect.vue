@@ -5,22 +5,30 @@
       @click="this.toggleDropdown = !this.toggleDropdown"
     >
       <p>Placeholder</p>
-      <i class="fas fa-sort-down" v-if="this.toggleDropdown"></i>
-      <i class="fas fa-sort-up" v-else></i>
+      <div class="triangle" v-if="this.toggleDropdown"></div>
+      <div class="triangle2" v-else></div>
     </div>
     <div class="dropdown" v-if="this.toggleDropdown">
-      <div class="list-types" v-for="group in Object.keys(stacks)" :key="group">
-        <h4>{{ group }}</h4>
-        <div class="option" v-for="stack in stacks[group]" :key="stack.id">
-          <img :src="stack.logo" :alt="stack.name" />
-          <p>{{ stack.name }}</p>
-        </div>
+      <div
+        class="list-types"
+        v-for="(group, key) in stacks"
+        :key="group"
+        v-show="group.find((s) => !s.tagged)"
+      >
+        <h4>{{ key }}</h4>
+        <transition-group>
+          <div
+            class="option"
+            v-for="stack in group"
+            :key="stack.id"
+            @click="addTag(stack)"
+            v-show="!stack.tagged"
+          >
+            <img :src="stack.logo" :alt="stack.name" />
+            <p>{{ stack.name }}</p>
+          </div>
+        </transition-group>
       </div>
-      <!-- 
-        TODO:
-        Rajouter une classe hidden quand sélectionné, et le push dans un tableau
-        dès que je push dans un tableau, je emit piur dire qu ça a été mis à jour
-      -->
     </div>
   </div>
 </template>
@@ -30,28 +38,60 @@ export default {
   data() {
     return {
       toggleDropdown: false,
+      tags: [],
     };
   },
   props: {
-    options: {
-      type: Object,
-      required: true,
-    },
     stacks: {
       type: Object,
       required: true,
+    },
+  },
+  methods: {
+    addTag(stack) {
+      // eslint-disable-next-line no-param-reassign
+      stack.tagged = true;
+      this.$emit('refreshStacks', this.stacks);
     },
   },
 };
 </script>
 
 <style scoped lang="scss">
+.triangle {
+  height: 0;
+  width: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-top: 15px solid green;
+}
+
+.triangle2 {
+  height: 0;
+  width: 0;
+  border-left: 7px solid transparent;
+  border-right: 7px solid transparent;
+  border-bottom: 15px solid red;
+}
+
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+
 .placeholder {
-  border: 1px solid blue;
-  display: flex;
+  background-color: #2b2b46;
+  display: inline-flex;
   justify-content: space-around;
   align-items: center;
+  font-size: large;
   color: white;
+  width: 100%;
 }
 
 .dropdown {
