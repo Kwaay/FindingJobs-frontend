@@ -4,7 +4,7 @@
       class="placeholder"
       @click="this.toggleDropdown = !this.toggleDropdown"
     >
-      <p>Placeholder</p>
+      <p>Liste des stacks</p>
       <div class="triangle" v-if="this.toggleDropdown"></div>
       <div class="triangle2" v-else></div>
     </div>
@@ -63,7 +63,7 @@ export default {
   width: 0;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-top: 15px solid green;
+  border-top: 8px solid #2b2b46;
 }
 
 .triangle2 {
@@ -71,7 +71,7 @@ export default {
   width: 0;
   border-left: 7px solid transparent;
   border-right: 7px solid transparent;
-  border-bottom: 15px solid red;
+  border-bottom: 8px solid #2b2b46;
 }
 
 .v-enter-active,
@@ -85,17 +85,17 @@ export default {
 }
 
 .placeholder {
-  background-color: #2b2b46;
+  background: white;
   display: inline-flex;
   justify-content: space-around;
   align-items: center;
   font-size: large;
-  color: white;
+  color: #2b2b46;
   width: 100%;
 }
 
 .dropdown {
-  border: 1px solid green;
+  background: #2b2b46;
   max-height: 25vh;
   overflow-x: hidden;
   overflow-y: scroll;
@@ -113,7 +113,9 @@ export default {
 }
 
 .option {
-  border: 1px solid cyan;
+  border: 1px solid white;
+  border-radius: 20px;
+  margin: 8px 0;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -124,7 +126,7 @@ export default {
 .list-types {
   text-align: left;
   color: white;
-  padding: 8px;
+  padding: 16px;
   position: relative;
 
   &::after {
@@ -134,7 +136,6 @@ export default {
     position: absolute;
     bottom: -2px;
     left: 0;
-    transition: width 0.2s ease-in-out;
     width: 100%;
   }
 }

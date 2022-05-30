@@ -16,17 +16,20 @@
       <h1>Jobs</h1>
       <p>Retrouvez tous les derniers jobs ci-dessous</p>
     </section>
+    <Search></Search>
     <JobDataTable></JobDataTable>
   </main>
 </template>
 
 <script>
 import Header from '../components/Header.vue';
+import Search from '../components/Search.vue';
 import JobDataTable from '../components/JobDataTable.vue';
 
 export default {
   components: {
     Header,
+    Search,
     JobDataTable,
   },
 };

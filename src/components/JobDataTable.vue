@@ -1,15 +1,5 @@
 <template>
   <section class="base">
-    <div class="search">
-      <form class="search-form">
-        <label for="title">
-          <input type="text" id="title" placeholder="Titre" />
-        </label>
-        <label for="region">
-          <input type="search" id="region" placeholder="Région" />
-        </label>
-      </form>
-    </div>
     <div class="filters">
       <h2>Filtres</h2>
       <form class="filters-form">
@@ -67,11 +57,13 @@
           <legend>
             <h3>Stacks</h3>
           </legend>
-          <div class="filters-tags-list">
+          <div class="filters-tags">
             <p @click="removeAllTags()">Tout supprimer</p>
-            <div class="tags" v-for="tag in taggedStacks" :key="tag">
-              <span>{{ tag.name }}</span>
-              <i class="fas fa-times" @click="deleteTag(tag)"></i>
+            <div class="tags-list">
+              <div class="tags" v-for="tag in taggedStacks" :key="tag">
+                <span>{{ tag.name }}</span>
+                <i class="fas fa-times" @click="deleteTag(tag)"></i>
+              </div>
             </div>
           </div>
           <CustomSelect
@@ -195,12 +187,6 @@ export default {
   height: 100vh;
 }
 
-.search {
-  background-color: #3c365d;
-  text-align: right;
-  position: relative;
-}
-
 .params input {
   height: 0;
   width: 0;
@@ -211,28 +197,6 @@ export default {
   height: 0;
   width: 0;
   display: none;
-}
-
-.search-form label input {
-  width: 40%;
-  height: 45px;
-  border-radius: 5px;
-  outline: transparent;
-  border: 1px solid black;
-  margin: 10px 0;
-  padding-left: 2vh;
-  color: black;
-}
-
-.search-form label {
-  padding: 0 2vh;
-}
-
-.search-form ::placeholder {
-  padding-left: 0.5vh;
-  font-size: large;
-  font-family: Imprima, sans-serif;
-  color: black;
 }
 
 .filters {
@@ -247,22 +211,32 @@ export default {
 }
 
 .filters h2 {
-  padding: 2vh;
   color: white;
 }
 
-.filters-tags-list {
+.filters-tags {
   width: 100%;
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
+  flex-flow: column wrap;
+  align-items: center;
+  margin-bottom: 8px;
 }
 
-.filters-tags-list p {
+.filters-tags p {
   border: 1px solid white;
   color: white;
   padding: 8px;
   border-radius: 20px;
+}
+
+.tags-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  max-height: 10vh;
 }
 
 .tags {
@@ -271,16 +245,12 @@ export default {
   border-radius: 30px;
   padding: 0.5vh;
   flex-wrap: wrap;
-  max-width: 100px;
   font-size: small;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
   margin: 0.5vh;
 }
 
 .tags span {
-  margin: 0.2vh;
+  margin-right: 0.5vh;
 }
 
 .filters-form {
